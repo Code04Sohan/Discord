@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Games Galaxy Discord Server</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Join Games Galaxy Discord Server</h1>
+    <div class="owner-name">Server Owner: Sohan Adhikari AKA LEDGET</div>
+    <div class="widget-container">
+        <!-- Custom Widget -->
+        <div class="custom-widget" id="custom-widget">
+            <div class="header">Server Widget (Custom)</div>
+            <div class="online-members" id="online-members">Loading...</div>
+            <a href="https://discord.com/invite/nMGFGNzJZ7" class="join-button" target="_blank">Join Server</a>
+        </div>
+
+        <!-- Pre-made Widget -->
+        <iframe src="https://discord.com/widget?id=683584271188885506&theme=dark" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+    </div>
+
+    <script>
+        // Fetch server data from JSON API
+        fetch('https://discord.com/api/guilds/683584271188885506/widget.json')
+            .then(response => response.json())
+            .then(data => {
+                const membersContainer = document.getElementById('online-members');
+                membersContainer.innerHTML = ""; // Clear loading text
+
+                if (data.presence_count) {
+                    membersContainer.innerHTML += `<p>Online Members: ${data.presence_count}</p>`;
+                }
+
+                data.members.forEach(member => {
+                    const memberElement = document.createElement('div');
+                    memberElement.className = 'member';
+                    memberElement.innerHTML = `
+                        <img src="${member.avatar_url}" alt="${member.username}">
+                        <span>${member.username}</span>
+                    `;
+                    membersContainer.appendChild(memberElement);
+                });
+            })
+            .catch(err => {
+                console.error('Error fetching widget data:', err);
+                document.getElementById('online-members').textContent = 'Failed to load data.';
+            });
+    </script>
+</body>
+</html>
